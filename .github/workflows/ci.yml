@@ -1,0 +1,28 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    # Use Visual Studio 2017 to create binaries compatible with both VS2017 and VS2019
+    runs-on: windows-2016
+    
+    steps:
+    - uses: actions/checkout@v1
+    
+    - name: Download QtIFW
+      shell: bash 
+      run: |
+        certutil.exe -urlcache -split -f https://github.com/robotology-dependencies/qtifw-binaries/releases/download/v3.1.1/QtIFW-3.1.1.zip QtIFW-3.1.1.zip
+        7z.exe x QtIFW-3.1.1.zip
+    
+    - name: Generate installer
+      shell: bash
+      run: |
+        export PATH=$PATH:${GITHUB_WORKSPACE}/QtIFW-3.1.1/bin
+        ./generate-installers.sh
+
+    - uses: actions/upload-artifact@master
+      with:
+        name: robotology-additional-dependencies-artifact
+        path: artifacts

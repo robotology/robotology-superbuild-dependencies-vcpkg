@@ -1,0 +1,2 @@
+include(${CMAKE_CURRENT_LIST_DIR}/common.cmake)
+set(VCPKG_CPACK_TARGET_TRIPLETS "x64-windows" CACHE STRING "")
