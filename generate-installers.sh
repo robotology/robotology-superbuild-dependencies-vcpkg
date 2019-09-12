@@ -13,7 +13,7 @@ mkdir build
 
 # Copy the appropriate version of vcpkg-cpack
 cd build
-git clone https://github.com/robotology-playground/vcpkg-cpack -b use-internal-vcpkg
+git clone https://github.com/robotology-playground/vcpkg-cpack -b devel
 cd ..
 
 # Copy the ipopt custom port 
@@ -36,8 +36,8 @@ echo "Copying installers in artifacts directory"
 rm -rf artifacts
 mkdir artifacts
 VERSION="0.1.0"
-cp ./build/x64-windows/robotology-additional-dependencies-${RAD_VERSION}-x86_amd64.exe ./artifacts/robotology-additional-dependencies-${RAD_VERSION}-v141-x86_amd64.exe
-cp ./build/x64-windows/robotology-additional-dependencies-${RAD_VERSION}-x86_amd64.zip ./artifacts/robotology-additional-dependencies-${RAD_VERSION}-v141-x86_amd64.zip
+cp ./build/x64-windows/robotology-additional-dependencies-${VERSION}-x86_amd64.exe ./artifacts/robotology-additional-dependencies-${VERSION}-v141-x86_amd64.exe
+cp ./build/x64-windows/robotology-additional-dependencies-${VERSION}-x86_amd64.zip ./artifacts/robotology-additional-dependencies-${VERSION}-v141-x86_amd64.zip
  
 echo "idjl-dependencies-installer correctly generated and copies in artefacts"
 exit 0
