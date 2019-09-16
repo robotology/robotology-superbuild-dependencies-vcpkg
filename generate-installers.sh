@@ -27,7 +27,7 @@ cd build
 rm -rf x64-windows
 mkdir x64-windows
 cd x64-windows 
-cmake -A x64 -C ../../config/x64-windows.cmake -DVCPKG_ADDITIONAL_OPTIONS=${VCPKG_ADDITIONAL_OPTIONS} ../vcpkg-cpack
+cmake -A x64 -C ../../config/x64-windows.cmake -DVCPKG_ROOT_DIR=${VCPKG_INSTALLATION_ROOT} -DVCPKG_CPACK_USE_EXTERNAL_VCPKG=ON -DVCPKG_ADDITIONAL_OPTIONS=${VCPKG_ADDITIONAL_OPTIONS} ../vcpkg-cpack
 cmake --build . --config Release --target PACKAGE 
 cd ../..
 
@@ -36,9 +36,9 @@ echo "Copying installers in artifacts directory"
 rm -rf artifacts
 mkdir artifacts
 VERSION="0.1.0"
-cp ./build/x64-windows/robotology-additional-dependencies-${VERSION}-x86_amd64.exe ./artifacts/robotology-additional-dependencies-${VERSION}-v141-x86_amd64.exe
-cp ./build/x64-windows/robotology-additional-dependencies-${VERSION}-x86_amd64.zip ./artifacts/robotology-additional-dependencies-${VERSION}-v141-x86_amd64.zip
+mv ./build/x64-windows/robotology-superbuild-dependencies-${VERSION}-x86_amd64.exe ./artifacts/robotology-superbuild-dependencies-${VERSION}-v141-x86_amd64.exe
+mv ./build/x64-windows/robotology-superbuild-dependencies-${VERSION}-x86_amd64.zip ./artifacts/robotology-superbuild-dependencies-${VERSION}-v141-x86_amd64.zip
  
-echo "idjl-dependencies-installer correctly generated and copies in artefacts"
+echo "idjl-dependencies-installer correctly generated and moved in artefacts"
 exit 0
 
