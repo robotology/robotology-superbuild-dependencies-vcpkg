@@ -6,7 +6,9 @@ jobs:
   build:
     # Use Visual Studio 2017 to create binaries compatible with both VS2017 and VS2019
     runs-on: windows-2016
-    
+    # The installer take several hours to generate 
+    timeout-minutes: 720
+
     steps:
     - uses: actions/checkout@v1
     
