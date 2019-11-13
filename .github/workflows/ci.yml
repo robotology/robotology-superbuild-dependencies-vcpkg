@@ -4,35 +4,29 @@ on: [push, pull_request]
 
 jobs:
   build:
-    # Use Visual Studio 2017 to create binaries compatible with both VS2017 and VS2019
-    runs-on: windows-2016
-    # The installer take several hours to generate 
-    timeout-minutes: 720
+    # We would like to build with v140 toolset to be compatible with both VS2017, 2019
+    # But that will only be avaiilable in late november: https://github.com/actions/virtual-environments/issues/68  
+    runs-on: windows-2019
 
     steps:
     - uses: actions/checkout@v1
-    
-    - name: Download QtIFW
-      shell: bash 
-      run: |
-        certutil.exe -urlcache -split -f https://github.com/robotology-dependencies/qtifw-binaries/releases/download/v3.1.1/QtIFW-3.1.1.zip QtIFW-3.1.1.zip
-        7z.exe x QtIFW-3.1.1.zip
     
     - name: Update vcpkg
       shell: bash
       run: |
         cd ${VCPKG_INSTALLATION_ROOT}
         git pull
-        git checkout 2019.08
-        ./bootstrap-vcpkg.sh
+        # Use a stable tag for reproducibility 
+        git checkout 2019.10
 
-    - name: Generate installer
+    - name: Install vcpkg ports
       shell: bash
       run: |
-        export PATH=$PATH:${GITHUB_WORKSPACE}/QtIFW-3.1.1/bin
-        ./generate-installers.sh
+        git clone https://github.com/robotology-dependencies/robotology-vcpkg-binary-ports C:/robotology-vcpkg-binary-ports
+        # TinyXML is not installed as a workaround for https://github.com/robotology/ycm/pull/296
+        vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows eigen3 ipopt-binary 
 
     - uses: actions/upload-artifact@master
       with:
-        name: robotology-additional-dependencies-artifact
-        path: ./artifacts
+        name: vcpkg-robotology
+        path: ${VCPKG_INSTALLATION_ROOT}
