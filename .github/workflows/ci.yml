@@ -18,6 +18,7 @@ jobs:
         git pull
         # Use a stable tag for reproducibility 
         git checkout 2019.10
+        ./bootstrap-vcpkg.sh
 
     - name: Install vcpkg ports
       shell: bash
