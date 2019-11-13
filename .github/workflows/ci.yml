@@ -30,4 +30,4 @@ jobs:
     - uses: actions/upload-artifact@master
       with:
         name: vcpkg-robotology
-        path: ${VCPKG_INSTALLATION_ROOT}
+        path: C:/vcpkg
