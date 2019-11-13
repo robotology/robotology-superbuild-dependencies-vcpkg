@@ -11,23 +11,20 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     
-    - name: Update vcpkg
+    - name: Download custom vcpkg and additional ports 
       shell: bash
       run: |
-        cd ${VCPKG_INSTALLATION_ROOT}
-        git pull
-        # Use a stable tag for reproducibility 
-        git checkout 2019.10
-        ./bootstrap-vcpkg.sh
+        git clone -b 2019.10 https://github.com/microsoft/vcpkg  C:/vcpkg-robotology
+        C:/vcpkg-robotology/bootstrap-vcpkg.sh
+        git clone https://github.com/robotology-dependencies/robotology-vcpkg-binary-ports C:/robotology-vcpkg-binary-ports
 
     - name: Install vcpkg ports
       shell: bash
       run: |
-        git clone https://github.com/robotology-dependencies/robotology-vcpkg-binary-ports C:/robotology-vcpkg-binary-ports
         # TinyXML is not installed as a workaround for https://github.com/robotology/ycm/pull/296
-        vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows eigen3 ipopt-binary 
+        C:/vcpkg-robotology/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows eigen3 ipopt-binary 
 
     - uses: actions/upload-artifact@master
       with:
         name: vcpkg-robotology
-        path: C:/vcpkg
+        path: C:/vcpkg-robotology
