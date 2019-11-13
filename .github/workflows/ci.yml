@@ -23,6 +23,10 @@ jobs:
       run: |
         # TinyXML is not installed as a workaround for https://github.com/robotology/ycm/pull/296
         C:/vcpkg-robotology/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows eigen3 ipopt-binary 
+        # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
+        rm -rf C:/vcpkg-robotology/buildtrees 
+        rm -rf C:/vcpkg-robotology/packages 
+        rm -rf C:/vcpkg-robotology/downloads 
 
     - uses: actions/upload-artifact@master
       with:
