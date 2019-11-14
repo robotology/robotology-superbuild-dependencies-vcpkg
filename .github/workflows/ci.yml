@@ -4,35 +4,31 @@ on: [push, pull_request]
 
 jobs:
   build:
-    # Use Visual Studio 2017 to create binaries compatible with both VS2017 and VS2019
-    runs-on: windows-2016
-    # The installer take several hours to generate 
-    timeout-minutes: 720
+    # We would like to build with v140 toolset to be compatible with both VS2017, 2019
+    # But that will only be avaiilable in late november: https://github.com/actions/virtual-environments/issues/68  
+    runs-on: windows-2019
 
     steps:
     - uses: actions/checkout@v1
     
-    - name: Download QtIFW
-      shell: bash 
-      run: |
-        certutil.exe -urlcache -split -f https://github.com/robotology-dependencies/qtifw-binaries/releases/download/v3.1.1/QtIFW-3.1.1.zip QtIFW-3.1.1.zip
-        7z.exe x QtIFW-3.1.1.zip
-    
-    - name: Update vcpkg
+    - name: Download custom vcpkg and additional ports 
       shell: bash
       run: |
-        cd ${VCPKG_INSTALLATION_ROOT}
-        git pull
-        git checkout 2019.08
-        ./bootstrap-vcpkg.sh
+        git clone -b 2019.10 https://github.com/microsoft/vcpkg  C:/vcpkg-robotology
+        C:/vcpkg-robotology/bootstrap-vcpkg.sh
+        git clone https://github.com/robotology-dependencies/robotology-vcpkg-binary-ports C:/robotology-vcpkg-binary-ports
 
-    - name: Generate installer
+    - name: Install vcpkg ports
       shell: bash
       run: |
-        export PATH=$PATH:${GITHUB_WORKSPACE}/QtIFW-3.1.1/bin
-        ./generate-installers.sh
+        # TinyXML is not installed as a workaround for https://github.com/robotology/ycm/pull/296
+        C:/vcpkg-robotology/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows ace freeglut gsl eigen3 ode libxml2 eigen3 opencv3 matio sdl1 sdl2 qt5-base ipopt-binary 
+        # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
+        rm -rf C:/vcpkg-robotology/buildtrees 
+        rm -rf C:/vcpkg-robotology/packages 
+        rm -rf C:/vcpkg-robotology/downloads 
 
     - uses: actions/upload-artifact@master
       with:
-        name: robotology-additional-dependencies-artifact
-        path: ./artifacts
+        name: vcpkg-robotology
+        path: C:/vcpkg-robotology
