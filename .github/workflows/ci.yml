@@ -15,6 +15,8 @@ jobs:
       shell: bash
       run: |
         git clone -b 2019.10 https://github.com/microsoft/vcpkg  C:/vcpkg-robotology
+        cd vcpkg-robotology
+        git checkout df4773c05614eb19084ae4db1fbc1bb3295d3ec6
         C:/vcpkg-robotology/bootstrap-vcpkg.sh
         git clone https://github.com/robotology-dependencies/robotology-vcpkg-binary-ports C:/robotology-vcpkg-binary-ports
 
