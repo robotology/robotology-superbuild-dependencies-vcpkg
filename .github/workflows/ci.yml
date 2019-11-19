@@ -28,7 +28,7 @@ jobs:
         C:/vcpkg-robotology/vcpkg.exe install --triplet x64-windows qt5-declarative qt5-multimedia qt5-quickcontrols2
         # Gazebo dependencies 
         rm -rf C:/vcpkg-robotology/buildtrees
-        C:/vcpkg-robotology/vcpkg.exe install --triplet x64-windows boost-asio  boost-date-time  boost-filesystem  boost-forma boost-interprocess boost-iostreams boost-program-options boost-property-tree boost-regex boost-smart-ptr boost-system boost-thread boost-uuid
+        C:/vcpkg-robotology/vcpkg.exe install --triplet x64-windows boost-asio  boost-date-time  boost-filesystem  boost-format boost-interprocess boost-iostreams boost-program-options boost-property-tree boost-regex boost-smart-ptr boost-system boost-thread boost-uuid
         rm -rf C:/vcpkg-robotology/buildtrees
         C:/vcpkg-robotology/vcpkg.exe install --triplet x64-windows bullet3 freeimage ignition-fuel-tools1 ignition-math4 ignition-msgs1 ignition-transport4
         rm -rf C:/vcpkg-robotology/buildtrees
