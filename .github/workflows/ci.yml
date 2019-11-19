@@ -36,7 +36,13 @@ jobs:
         rm -rf C:/vcpkg-robotology/buildtrees
         C:/vcpkg-robotology/vcpkg.exe install --triplet x64-windows bullet3 freeimage ignition-fuel-tools1 ignition-math4 ignition-msgs1 ignition-transport4
         rm -rf C:/vcpkg-robotology/buildtrees
-        C:/vcpkg-robotology/vcpkg.exe install --triplet x64-windows ogre protobuf qwt sdformat6 tbb tinyxml tinyxml2 zeromq
+        rm -rf C:/vcpkg-robotology/packages 
+        rm -rf C:/vcpkg-robotology/downloads
+        C:/vcpkg-robotology/vcpkg.exe install --triplet x64-windows ogre 
+        rm -rf C:/vcpkg-robotology/buildtrees
+        rm -rf C:/vcpkg-robotology/packages 
+        rm -rf C:/vcpkg-robotology/downloads
+        C:/vcpkg-robotology/vcpkg.exe install --triplet x64-windows protobuf qwt sdformat6 tbb tinyxml tinyxml2 zeromq
         rm -rf C:/vcpkg-robotology/buildtrees
         C:/vcpkg-robotology/vcpkg.exe install --triplet x64-windows gazebo10
         # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
