@@ -10,6 +10,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+  
+    # Workaround for https://github.community/t5/GitHub-Actions/Windows-tests-worked-yesterday-broken-today/td-p/43574
+    - name: Override bash shell PATH (windows-latest)
+      run: echo "::add-path::C:\Program Files\Git\bin"
+      if: matrix.os == 'windows-latest'
     
     - name: Download custom vcpkg and additional ports 
       shell: bash
