@@ -19,7 +19,7 @@ jobs:
       shell: bash
       run: |
         mkdir C:/robotology
-        git clone -b 2019.10 https://github.com/microsoft/vcpkg  C:/robotology/vcpkg
+        git clone -b 2019.12 https://github.com/microsoft/vcpkg  C:/robotology/vcpkg
         C:/robotology/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology-dependencies/robotology-vcpkg-binary-ports C:/robotology-vcpkg-binary-ports
 
