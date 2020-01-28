@@ -10,10 +10,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    
+    - name: Check free space 
+      shell: bash 
+      run: |
+        df -h
   
     # Workaround for https://github.community/t5/GitHub-Actions/Windows-tests-worked-yesterday-broken-today/td-p/43574
-    #- name: Override bash shell PATH (windows-latest)
-    #  run: echo "::add-path::C:\Program Files\Git\bin"
+    - name: Override bash shell PATH (windows-latest)
+      run: echo "::add-path::C:\Program Files\Git\bin"
     
     - name: Download custom vcpkg and additional ports 
       shell: bash
@@ -21,13 +26,15 @@ jobs:
         mkdir C:/robotology
         git clone -b 2019.10 https://github.com/microsoft/vcpkg  C:/robotology/vcpkg
         C:/robotology/vcpkg/bootstrap-vcpkg.sh
-        sleep 1
         git clone https://github.com/robotology-dependencies/robotology-vcpkg-binary-ports C:/robotology-vcpkg-binary-ports
 
     - name: Install vcpkg ports
       shell: bash
       run: |
         # TinyXML is not installed as a workaround for https://github.com/robotology/ycm/pull/296
+        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows openssl
+        # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
+        rm -rf C:/robotology/vcpkg/buildtrees 
         C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows ace freeglut gsl eigen3 ode libxml2 eigen3 opencv3 matio sdl1 sdl2 qt5-base  ipopt-binary 
         # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
         rm -rf C:/robotology/vcpkg/buildtrees 
