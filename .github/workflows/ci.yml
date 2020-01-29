@@ -18,11 +18,10 @@ jobs:
     
     # Workaround for https://github.com/actions/virtual-environments/issues/326 until the fix is deployed
     - name: Remove
-      shell: bash 
+      shell: pwsh 
       run: |
-        rm -rf C:\Program Files (x86)\Android
-        rm -rf ${BOOST_ROOT_1_69_0}
-        rm -rf C:\Program Files\Java
+        rm -Force -Recurse -Path 'C:\Program Files (x86)\Android'
+        rm -Force -Recurse -Path 'C:\Program Files\Java'
     
     - name: Check free space 
       shell: bash 
