@@ -22,7 +22,12 @@ jobs:
       run: |
         rm -Force -Recurse -Path 'C:\Program Files (x86)\Android'
         rm -Force -Recurse -Path 'C:\Program Files\Java'
-    
+        rm -Force -Recurse -Path 'C:\Program Files\dotnet'
+        rm -Force -Recurse -Path 'C:\Program Files (x86)\Google'
+        rm -Force -Recurse -Path 'C:\tools\php'
+        rm -Force -Recurse -Path 'C:\go'
+        rm -Force -Recurse -Path 'C:\Rust'
+
     - name: Check free space 
       shell: bash 
       run: |
