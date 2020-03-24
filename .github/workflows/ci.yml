@@ -29,6 +29,7 @@ jobs:
       run: |
         choco install -y wget
         mkdir C:/robotology
+        cd C:/robotology
         # Download a custom vcpkg 2019.10 that already contains ace pre-compiled, as a workaround for https://github.com/actions/virtual-environments/issues/605
         wget https://github.com/robotology/robotology-vcpkg-binary-ports/releases/download/storage/robotology-vcpkg-2019.10-ace.zip
         7z x robotology-vcpkg-2019.10-ace.zip
