@@ -19,22 +19,6 @@ jobs:
       shell: bash 
       run: |
         df -h
-    
-    # Workaround for https://github.com/actions/virtual-environments/issues/326 until the fix is deployed
-    - name: Remove
-      shell: pwsh 
-      run: |
-        rm -Force -Recurse -Path 'C:\Program Files (x86)\Android'
-        rm -Force -Recurse -Path 'C:\Program Files\Java'
-        rm -Force -Recurse -Path 'C:\Program Files\dotnet'
-        rm -Force -Recurse -Path 'C:\Program Files (x86)\Google'
-        rm -Force -Recurse -Path 'C:\tools\php'
-        rm -Force -Recurse -Path 'C:\Rust'
-
-    - name: Check free space 
-      shell: bash 
-      run: |
-        df -h
   
     # Workaround for https://github.community/t5/GitHub-Actions/Windows-tests-worked-yesterday-broken-today/td-p/43574
     - name: Override bash shell PATH (windows-latest)
