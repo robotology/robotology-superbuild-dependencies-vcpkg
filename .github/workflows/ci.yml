@@ -27,10 +27,15 @@ jobs:
     - name: Download custom vcpkg and additional ports 
       shell: bash
       run: |
+        choco install -y wget
         mkdir C:/robotology
-        git clone -b 2019.10 https://github.com/microsoft/vcpkg  C:/robotology/vcpkg
+        # Download a custom vcpkg 2019.10 that already contains ace pre-compiled, as a workaround for https://github.com/actions/virtual-environments/issues/605
+        wget https://github.com/robotology/robotology-vcpkg-binary-ports/releases/download/storage/robotology-vcpkg-2019.10-ace.zip
+        7z x robotology-vcpkg-2020.01-ace.zip
         C:/robotology/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology-dependencies/robotology-vcpkg-binary-ports C:/robotology-vcpkg-binary-ports
+        cd C:/robotology-vcpkg-binary-ports
+        git checkout v0.1.0
 
     - name: Install vcpkg ports
       shell: bash
