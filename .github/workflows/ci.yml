@@ -56,7 +56,7 @@ jobs:
     - uses: actions/upload-artifact@master
       with:
         name: vcpkg-robotology
-        path: C:/robotology/vcpkg
+        path: C:/robotology
         
     - name: Prepare release file
       if: github.event_name == 'release'
