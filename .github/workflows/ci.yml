@@ -58,8 +58,21 @@ jobs:
         RMDIR /Q/S C:\robotology\vcpkg\buildtrees
         RMDIR /Q/S C:\robotology\vcpkg\packages
         RMDIR /Q/S C:\robotology\vcpkg\downloads
-        
-    - uses: actions/upload-artifact@master
+    
+    - name: Install setup scripts    
+      shell: bash
+      run: |
+        mkdir /c/robotology/scripts
+        cp scripts/setup-vcpkg.bat /c/robotology/scripts
+        cp scripts/setup-deps.bat /c/robotology/scripts
+        cp scripts/setup-vcpkg.sh /c/robotology/scripts
+        cp scripts/setup-deps.sh /c/robotology/scripts
+        cp scripts/addPathsToUserEnvVariables-vcpkg.ps1 /c/robotology/scripts
+        cp scripts/addPathsToUserEnvVariables-deps.ps1 /c/robotology/scripts
+        cp scripts/removePathsFromUserEnvVariables-vcpkg.ps1 /c/robotology/scripts
+        cp scripts/removePathsFromUserEnvVariables-deps.ps1 /c/robotology/scripts
+
+    - uses: actions/upload-artifact@v1
       with:
         name: vcpkg-robotology
         path: C:/robotology
@@ -79,4 +92,112 @@ jobs:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: ./vcpkg-robotology.zip
           asset_name: vcpkg-robotology.zip
+          asset_content_type: application/zip
+
+  build-with-gazebo-deps:
+    runs-on: windows-2019
+    needs: build
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - uses: actions/download-artifact@v1
+      with:
+        name: vcpkg-robotology
+        path: C:/robotology
+
+    - name: Check free space 
+      shell: bash 
+      run: |
+        df -h
+    
+    - name: Install vcpkg ports
+      shell: bash
+      run: |
+        # Install dependencies for gazebo11 and related ignition dependencies (listed in https://github.com/ignition-tooling/gazebodistro/blob/master/gazebo11.yaml)         
+        # gts is not present due to https://github.com/microsoft/vcpkg/issues/10422, and its dependency glib is present instead
+        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-binary-ports install --triplet x64-windows boost-asio boost-any boost-date-time boost-filesystem boost-format boost-interprocess boost-iostreams boost-program-options boost-property-tree boost-regex boost-smart-ptr boost-system boost-thread boost-variant boost-uuid bullet3 cppzmq curl dlfcn-win32 freeimage glib libyaml libzip jsoncpp ogre protobuf qt5-base qwt sqlite3[core,tool] tbb tinyxml tinyxml2 urdfdom zeromq
+        
+    # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
+    # For some reason doing using git bash to do rm -rf fails for icu's port buildtrees, probably for the use of msys2 
+    # See https://github.com/microsoft/vcpkg/issues/10365  
+    - name: Cleanup vcpkg temporary directories
+      shell: cmd 
+      run: |
+        RMDIR /Q/S C:\robotology\vcpkg\buildtrees
+        RMDIR /Q/S C:\robotology\vcpkg\packages
+        RMDIR /Q/S C:\robotology\vcpkg\downloads
+        
+    - uses: actions/upload-artifact@v1
+      with:
+        name: vcpkg-robotology-with-gazebo-deps
+        path: C:/robotology
+
+  build-with-gazebo:
+    runs-on: windows-2019
+    needs: build-with-gazebo-deps
+
+    steps:
+    - uses: actions/checkout@v1
+  
+    - uses: actions/download-artifact@v1
+      with:
+        name: vcpkg-robotology-with-gazebo-deps
+        path: C:/robotology
+    
+    - name: Check free space 
+      shell: bash 
+      run: |
+        df -h
+        
+    - name: Install required python-based tools
+      shell: bash
+      run: |
+        pip install vcstool colcon-common-extensions
+    
+    # Based on https://colcon.readthedocs.io/en/released/user/quick-start.html#build-gazebo-and-the-ignition-packages
+    - name: Download Gazebo and related libraries
+      shell: bash
+      run: |
+        mkdir C:/robotology/gazebo
+        cd C:/robotology/gazebo
+        mkdir src
+        vcs import src < ${GITHUB_WORKSPACE}/gazebo-repos.yaml
+        
+    - name: Build Gazebo and related libraries
+      shell: bash
+      run: |
+        cd C:/robotology/gazebo
+        colcon build --merge-install --cmake-args -G "Visual Studio 16 2019" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:/robotology/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_TESTING:BOOL=OFF        
+    # Remove temporary files
+    - name: Cleanup vcpkg temporary directories
+      shell: cmd 
+      run: |
+        RMDIR /Q/S C:\robotology\gazebo\build
+        RMDIR /Q/S C:\robotology\gazebo\src
+        
+    - name: Install setup scripts    
+      shell: bash
+      run: |
+        mkdir /c/robotology/scripts
+        cp scripts/setup-gazebo.bat /c/robotology/scripts
+        cp scripts/setup-gazebo.sh /c/robotology/scripts
+        cp scripts/addPathsToUserEnvVariables-gazebo.ps1 /c/robotology/scripts
+        cp scripts/removePathsFromUserEnvVariables-gazebo.ps1 /c/robotology/scripts
+        
+    - name: Prepare release file
+      if: github.event_name == 'release'
+      shell: cmd 
+      run: |
+        7z a vcpkg-robotology-with-gazebo.zip C:\robotology
+        
+    - name: Upload Release Asset
+      if: github.event_name == 'release'
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./vcpkg-robotology-with-gazebo.zip
+          asset_name: vcpkg-robotology-with-gazebo.zip
           asset_content_type: application/zip
