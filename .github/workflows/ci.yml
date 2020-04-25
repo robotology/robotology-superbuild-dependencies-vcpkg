@@ -36,7 +36,7 @@ jobs:
         rm robotology-vcpkg-2019.10-ace.zip
         cd C:/robotology/vcpkg
         # Update vcpkg to a newer commit
-        git pull
+        git fetch
         git checkout 28ab0b15cd7cdc1004cac9a28a5ecab198c161b9
         C:/robotology/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology-dependencies/robotology-vcpkg-binary-ports C:/robotology/robotology-vcpkg-binary-ports
