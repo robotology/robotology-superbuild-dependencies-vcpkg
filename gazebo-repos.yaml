@@ -1,4 +1,8 @@
 repositories:
+  gts:
+    type: git
+    url: https://github.com/finetjul/gts
+    version: master
   gazebo:
     type: git
     url: https://github.com/osrf/gazebo
