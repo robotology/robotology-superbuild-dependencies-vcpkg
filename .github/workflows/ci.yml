@@ -14,7 +14,6 @@ jobs:
     - uses: actions/checkout@v1
   
     - name: Dependencies
-      if: matrix.os == 'windows-latest'
       run: |
         choco install -y wget unzip
         cd C:/
