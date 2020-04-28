@@ -5,8 +5,8 @@ repositories:
     version: master
   gazebo:
     type: git
-    url: https://github.com/osrf/gazebo
-    version: gazebo11
+    url: https://github.com/traversaro/gazebo
+    version: fix-vcpkg-gha
   ign-cmake:
     type: git
     url: https://github.com/ignitionrobotics/ign-cmake
