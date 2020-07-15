@@ -50,11 +50,11 @@ As Gazebo on Windows does not provide the single `gazebo` executable available i
 You can install or remove  ports from the vcpkg installation in `C:/robotology/vcpkg` as you do for any other vcpkg installation.
 
 However, as this  vcpkg installation contains some ports installed  from the custom port repo contained in `C:/robotology/vcpkg`, 
-due to a regression in vcpkg (see https://github.com/microsoft/vcpkg/issues/10119) you need to pass the `--overlay-ports=C:/robotology/vcpkg/robotology-vcpkg-binary-ports` argument whenever you use vcpkg.
+due to a regression in vcpkg (see https://github.com/microsoft/vcpkg/issues/10119) you need to pass the `--overlay-ports=C:/robotology/robotology-vcpkg-binary-ports` argument whenever you use vcpkg.
 
 For example, to install a new port called `<portname>` the correct command is:
 ~~~
-./vcpkg.exe install --overlay-ports=C:/robotology/vcpkg/robotology-vcpkg-binary-ports <portname>:x64-windows
+./vcpkg.exe install --overlay-ports=C:/robotology/robotology-vcpkg-binary-ports <portname>:x64-windows
 ~~~
 
 ### GitHub Actions 
