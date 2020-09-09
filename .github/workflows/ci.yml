@@ -37,7 +37,7 @@ jobs:
         cd C:/robotology/vcpkg
         # Update vcpkg to a newer commit
         git fetch
-        git checkout 2020.06
+        git checkout bff4dd9c944b9fbad40ec1a36d7c2365287ce0a6
         C:/robotology/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology-dependencies/robotology-vcpkg-binary-ports C:/robotology/robotology-vcpkg-binary-ports
         cd C:/robotology/robotology-vcpkg-binary-ports
