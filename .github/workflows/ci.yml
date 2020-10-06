@@ -37,18 +37,11 @@ jobs:
         cd C:/robotology/vcpkg
         # Update vcpkg to a newer commit
         git fetch
-        git checkout acd2f59e931172f46706ef8ac2fc9b21f71fba85
+        git checkout 76a7e9248fb3c57350b559966dcaa2d52a5e4458
         C:/robotology/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology/robotology-vcpkg-ports C:/robotology/robotology-vcpkg-ports
         cd C:/robotology/robotology-vcpkg-ports
         git checkout v0.1.1
-        # Download manually msys2 downloads to workaround msys2 related problem (https://github.com/microsoft/vcpkg/issues/13871)
-        cd C:/robotology/vcpkg
-        mkdir downloads
-        cd downloads
-        wget https://mirror.yandex.ru/mirrors/msys2/mingw/i686/mingw-w64-i686-pkg-config-0.29.2-1-any.pkg.tar.xz
-        wget https://mirror.yandex.ru/mirrors/msys2/mingw/i686/mingw-w64-i686-libwinpthread-git-8.0.0.5906.c9a21571-1-any.pkg.tar.zst
-        
 
     - name: Install vcpkg ports
       shell: bash
