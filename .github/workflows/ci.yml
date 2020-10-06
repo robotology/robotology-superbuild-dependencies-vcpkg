@@ -47,7 +47,8 @@ jobs:
       shell: bash
       run: |
         # TinyXML is not installed as a workaround for https://github.com/robotology/ycm/pull/296
-        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports install --triplet x64-windows ace asio boost-asio boost-bind boost-process boost-dll boost-filesystem boost-system freeglut gsl eigen3 esdcan-binary glew glfw3 ode openssl libxml2 libjpeg-turbo eigen3 opencv portaudio matio sdl1 sdl2 qt5-base[latest] ipopt-binary qt5-declarative qt5-multimedia qt5-quickcontrols qt5-quickcontrols2 sqlite3[core,tool]
+        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows portaudio ipopt-binary
+        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows ace asio boost-asio boost-bind boost-process boost-dll boost-filesystem boost-system freeglut gsl eigen3 esdcan-binary glew glfw3 ode openssl libxml2 libjpeg-turbo eigen3 opencv portaudio matio sdl1 sdl2 qt5-base[latest] ipopt-binary qt5-declarative qt5-multimedia qt5-quickcontrols qt5-quickcontrols2 sqlite3[core,tool]
 
     # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
     # For some reason doing using git bash to do rm -rf fails for icu's port buildtrees, probably for the use of msys2 
