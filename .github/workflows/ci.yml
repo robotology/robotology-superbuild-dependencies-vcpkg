@@ -37,8 +37,7 @@ jobs:
         cd C:/robotology/vcpkg
         # Update vcpkg to a newer commit
         git fetch
-        # Specific commit as a workaround for https://github.com/robotology/robotology-superbuild-dependencies-vcpkg/issues/29
-        git checkout 3513e92bf9d388ac547d0a87c50a135b4eaa634c
+        git checkout 76a7e9248fb3c57350b559966dcaa2d52a5e4458
         C:/robotology/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology/robotology-vcpkg-ports C:/robotology/robotology-vcpkg-ports
         cd C:/robotology/robotology-vcpkg-ports
