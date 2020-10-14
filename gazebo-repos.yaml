@@ -1,41 +1,33 @@
 repositories:
   gazebo:
     type: git
-    url: https://github.com/traversaro/gazebo
-    # Commit from https://github.com/traversaro/gazebo/tree/fix-vcpkg-gha
-    # With backport of:
-    #  * https://github.com/osrf/gazebo/pull/2758
-    #  * https://github.com/osrf/gazebo/pull/2719
-    version: bc4c1714975433c39acda779d19a2e284ed01fc4
-  gts:
-    type: git
-    url: https://github.com/finetjul/gts
-    version: c4da61ae075f355d9ecc9f2d4767acf777f54c2b
+    url: https://github.com/osrf/gazebo
+    version: gazebo11_11.2.0
   ign-cmake:
     type: git
     url: https://github.com/ignitionrobotics/ign-cmake
-    version: 2f5c3178dbee496beedf8e4a636a2c71219fe8e0
+    version: ignition-cmake2_2.5.0
   ign-common:
     type: git
     url: https://github.com/ignitionrobotics/ign-common
-    version: 70658d137256dd57e87690ff45bd3c077c087f09
+    version: ignition-common3_3.6.1
   ign-fuel-tools:
     type: git
     url: https://github.com/ignitionrobotics/ign-fuel-tools
-    version: af1eec41c92cdc9b26b9d03b084b7aeb3ca1fb9e
+    version: ignition-fuel-tools4_4.2.1
   ign-math:
     type: git
     url: https://github.com/ignitionrobotics/ign-math
-    version: c2726425418f93a0ea384815c7eab55749a7d0ea
+    version: ignition-math6_6.6.0
   ign-msgs:
     type: git
     url: https://github.com/ignitionrobotics/ign-msgs
-    version: 84ff940249ce23a62917d8ca239f79450548d0a0
+    version: ignition-msgs5_5.3.0
   ign-transport:
     type: git
     url: https://github.com/ignitionrobotics/ign-transport
-    version: 185edc9ce3c5254b1b57aa4b87af5f6c474ce097
+    version: ignition-transport8_8.1.0
   sdformat:
     type: git
     url: https://github.com/osrf/sdformat
-    version: b6f73d9fe0e55c9933b1d369dda2771e14ec6ef9
+    version: sdformat9_9.3.0
