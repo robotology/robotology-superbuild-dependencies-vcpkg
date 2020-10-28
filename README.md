@@ -49,6 +49,12 @@ As Gazebo on Windows does not provide the single `gazebo` executable available i
 ### Install or remove vcpkg ports 
 You can install or remove  ports from the vcpkg installation in `C:/robotology/vcpkg` as you do for any other vcpkg installation.
 
+### pdb files
+To reduce the size of the pre-compiled archives, the .pdb files (see https://stackoverflow.com/questions/3899573/what-is-a-pdb-file) 
+that contain the debug symbols of the provided library are removed from both the Release and Debug version of the vcpkg-installed libraries.
+If you need to have the debug symbols of the vcpkg-installed libraries, it is suggested to install the vcpkg ports directly without 
+relying on the pre-compiled archive provided by this repo. 
+
 ### GitHub Actions 
 To use the script in a GitHub Action script, you can use the following snippet: 
 ~~~~

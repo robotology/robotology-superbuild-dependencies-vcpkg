@@ -32,7 +32,7 @@ jobs:
         cd C:/robotology
         git clone https://github.com/Microsoft/vcpkg
         cd vcpkg
-        git checkout 70f192e073dd9e5ed503fc1e86d8a54e2fbaceb4
+        git checkout ac2ddd5f059b56b6e0b9fc0c73bd4feccad539ff
         C:/robotology/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology/robotology-vcpkg-ports C:/robotology/robotology-vcpkg-ports
         cd C:/robotology/robotology-vcpkg-ports
@@ -53,6 +53,13 @@ jobs:
         RMDIR /Q/S C:\robotology\vcpkg\buildtrees
         RMDIR /Q/S C:\robotology\vcpkg\packages
         RMDIR /Q/S C:\robotology\vcpkg\downloads
+    
+    # Remove .pdb (i.e. debug symbols) files to save space
+    - name: Remove .pdb
+      shell: bash
+      run: |
+        rm -rf /c/robotology/vcpkg/installed/x64-windows/bin/*.pdb
+        rm -rf /c/robotology/vcpkg/installed/x64-windows/debug/bin/*.pdb
     
     - name: Install setup scripts    
       shell: bash
@@ -123,6 +130,14 @@ jobs:
         RMDIR /Q/S C:\robotology\vcpkg\packages
         RMDIR /Q/S C:\robotology\vcpkg\downloads
         
+    # Remove .pdb (i.e. debug symbols) files to save space
+    - name: Remove .pdb
+      shell: bash
+      run: |
+        rm -rf /c/robotology/vcpkg/installed/x64-windows/bin/*.pdb
+        rm -rf /c/robotology/vcpkg/installed/x64-windows/debug/bin/*.pdb
+      
+  
     - uses: actions/upload-artifact@v1
       with:
         name: vcpkg-robotology-with-gazebo-deps
