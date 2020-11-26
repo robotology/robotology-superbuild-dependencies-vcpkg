@@ -22,7 +22,7 @@ jobs:
 
     # Workaround for https://github.community/t5/GitHub-Actions/Windows-tests-worked-yesterday-broken-today/td-p/43574
     - name: Override bash shell PATH (windows-latest)
-      run: echo "::add-path::C:\Program Files\Git\bin"
+      run: echo "C:\Program Files\Git\bin" >> $GITHUB_PATH
 
     - name: Download custom vcpkg and additional ports
       shell: bash
