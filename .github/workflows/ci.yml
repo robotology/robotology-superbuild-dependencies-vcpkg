@@ -117,7 +117,7 @@ jobs:
     - name: Install vcpkg ports
       shell: bash
       run: |
-        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows asio boost-asio boost-bind boost-process boost-dll boost-filesystem boost-system freeglut esdcan-binary glew glfw3 ode openssl libxml2 matio ipopt-binary
+        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows asio boost-asio boost-bind boost-process boost-dll boost-filesystem boost-system freeglut esdcan-binary glew glfw3 ode openssl libxml2 matio ipopt-binary cppad
         C:/robotology/vcpkg/vcpkg.exe list
 
     # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
@@ -180,7 +180,7 @@ jobs:
       shell: bash
       run: |
         # Install dependencies for gazebo11 and related ignition dependencies (listed in https://github.com/ignition-tooling/gazebodistro/blob/master/gazebo11.yaml)
-        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows boost-asio boost-any boost-date-time boost-filesystem boost-format boost-interprocess boost-iostreams boost-program-options boost-property-tree boost-regex boost-smart-ptr boost-system boost-thread boost-variant boost-uuid bullet3 cppad cppzmq curl dlfcn-win32 freeimage gts libyaml libzip jsoncpp ogre protobuf qt5-base qwt sqlite3[core,tool] tbb tinyxml2 urdfdom zeromq
+        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows boost-asio boost-any boost-date-time boost-filesystem boost-format boost-interprocess boost-iostreams boost-program-options boost-property-tree boost-regex boost-smart-ptr boost-system boost-thread boost-variant boost-uuid bullet3 cppzmq curl dlfcn-win32 freeimage gts libyaml libzip jsoncpp ogre protobuf qt5-base qwt sqlite3[core,tool] tbb tinyxml2 urdfdom zeromq
         C:/robotology/vcpkg/vcpkg.exe list
 
     # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
