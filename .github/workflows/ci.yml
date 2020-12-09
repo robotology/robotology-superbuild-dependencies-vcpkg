@@ -22,7 +22,7 @@ jobs:
 
     # Workaround for https://github.community/t5/GitHub-Actions/Windows-tests-worked-yesterday-broken-today/td-p/43574
     - name: Override bash shell PATH (windows-latest)
-      run: echo "::add-path::C:\Program Files\Git\bin"
+      run: echo "C:\Program Files\Git\bin" >> $GITHUB_PATH
 
     - name: Download custom vcpkg and additional ports
       shell: bash
@@ -117,7 +117,7 @@ jobs:
     - name: Install vcpkg ports
       shell: bash
       run: |
-        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows asio boost-asio boost-bind boost-process boost-dll boost-filesystem boost-system freeglut esdcan-binary glew glfw3 ode openssl libxml2 matio ipopt-binary
+        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows asio boost-asio boost-bind boost-process boost-dll boost-filesystem boost-system freeglut esdcan-binary glew glfw3 ode openssl libxml2 matio ipopt-binary cppad
         C:/robotology/vcpkg/vcpkg.exe list
 
     # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
