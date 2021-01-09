@@ -32,7 +32,7 @@ jobs:
         cd C:/robotology
         git clone https://github.com/Microsoft/vcpkg
         cd vcpkg
-        git checkout ac2ddd5f059b56b6e0b9fc0c73bd4feccad539ff
+        git checkout a14a6bcb27287e3ec138dba1b948a0cdbc337a3a
         C:/robotology/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology/robotology-vcpkg-ports C:/robotology/robotology-vcpkg-ports
         cd C:/robotology/robotology-vcpkg-ports
