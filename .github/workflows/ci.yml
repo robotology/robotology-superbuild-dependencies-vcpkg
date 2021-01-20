@@ -242,6 +242,13 @@ jobs:
         cd C:/robotology/gazebo
         colcon build --merge-install --cmake-args -G "Visual Studio 16 2019" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:/robotology/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_TESTING:BOOL=OFF
 
+    - name: Upload logs on failures
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v1
+      with:
+        name: gazebo-colcon-logs
+        path: C:/robotology/gazebo/log
+
     # Remove temporary files
     - name: Cleanup vcpkg temporary directories
       shell: cmd
