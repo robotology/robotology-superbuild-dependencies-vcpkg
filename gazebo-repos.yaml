@@ -2,32 +2,4 @@ repositories:
   gazebo:
     type: git
     url: https://github.com/osrf/gazebo
-    version: gazebo11_11.2.0
-  ign-cmake:
-    type: git
-    url: https://github.com/ignitionrobotics/ign-cmake
-    version: ignition-cmake2_2.5.0
-  ign-common:
-    type: git
-    url: https://github.com/ignitionrobotics/ign-common
-    version: ignition-common3_3.6.1
-  ign-fuel-tools:
-    type: git
-    url: https://github.com/ignitionrobotics/ign-fuel-tools
-    version: ignition-fuel-tools4_4.2.1
-  ign-math:
-    type: git
-    url: https://github.com/ignitionrobotics/ign-math
-    version: ignition-math6_6.6.0
-  ign-msgs:
-    type: git
-    url: https://github.com/ignitionrobotics/ign-msgs
-    version: ignition-msgs5_5.3.0
-  ign-transport:
-    type: git
-    url: https://github.com/ignitionrobotics/ign-transport
-    version: ignition-transport8_8.1.0
-  sdformat:
-    type: git
-    url: https://github.com/osrf/sdformat
-    version: sdformat9_9.3.0
+    version: 0d1642979382d95ae5a120fdccaeb7ad4c51cf36

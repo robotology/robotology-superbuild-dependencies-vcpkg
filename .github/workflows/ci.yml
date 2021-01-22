@@ -32,7 +32,7 @@ jobs:
         cd C:/robotology
         git clone https://github.com/Microsoft/vcpkg
         cd vcpkg
-        git checkout ac2ddd5f059b56b6e0b9fc0c73bd4feccad539ff
+        git checkout 45fc55825db2a5bcaffccff1e6afadc519d164ea
         C:/robotology/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology/robotology-vcpkg-ports C:/robotology/robotology-vcpkg-ports
         cd C:/robotology/robotology-vcpkg-ports
@@ -117,7 +117,7 @@ jobs:
     - name: Install vcpkg ports
       shell: bash
       run: |
-        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows asio boost-asio boost-bind boost-process boost-dll boost-filesystem boost-system freeglut esdcan-binary glew glfw3 ode openssl libxml2 matio ipopt-binary cppad
+        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows asio boost-asio boost-bind boost-process boost-dll boost-filesystem boost-system freeglut esdcan-binary glew glfw3 ode openssl libxml2 matio ipopt-binary cppad irrlicht
         C:/robotology/vcpkg/vcpkg.exe list
 
     # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
@@ -179,8 +179,8 @@ jobs:
     - name: Install vcpkg ports
       shell: bash
       run: |
-        # Install dependencies for gazebo11 and related ignition dependencies (listed in https://github.com/ignition-tooling/gazebodistro/blob/master/gazebo11.yaml)
-        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows boost-asio boost-any boost-date-time boost-filesystem boost-format boost-interprocess boost-iostreams boost-program-options boost-property-tree boost-regex boost-smart-ptr boost-system boost-thread boost-variant boost-uuid bullet3 cppzmq curl dlfcn-win32 freeimage gts libyaml libzip jsoncpp ogre protobuf qt5-base qwt sqlite3[core,tool] tbb tinyxml2 urdfdom zeromq
+        # Install dependencies for gazebo11
+        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows boost-asio boost-any boost-date-time boost-filesystem boost-format boost-interprocess boost-iostreams boost-program-options boost-property-tree boost-regex boost-smart-ptr boost-system boost-thread boost-variant boost-uuid bullet3 cppzmq curl dlfcn-win32 freeimage gts libyaml libzip jsoncpp ogre[core,assimp,freeimage,overlay,zziplib] protobuf qt5-base qwt sqlite3[core,tool] tbb tinyxml2 urdfdom zeromq ignition-cmake2 ignition-common3 ignition-fuel-tools4 ignition-math6 ignition-msgs5 ignition-transport8 sdformat9
         C:/robotology/vcpkg/vcpkg.exe list
 
     # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
@@ -241,6 +241,13 @@ jobs:
       run: |
         cd C:/robotology/gazebo
         colcon build --merge-install --cmake-args -G "Visual Studio 16 2019" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:/robotology/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_TESTING:BOOL=OFF
+
+    - name: Upload logs on failures
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v1
+      with:
+        name: gazebo-colcon-logs
+        path: C:/robotology/gazebo/log
 
     # Remove temporary files
     - name: Cleanup vcpkg temporary directories
