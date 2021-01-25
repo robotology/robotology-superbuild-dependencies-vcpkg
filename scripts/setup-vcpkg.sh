@@ -14,5 +14,9 @@ export PATH=$PATH:${vcpkgInstallDir}/debug/bin
 export CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH:+${CMAKE_PREFIX_PATH}:}${vcpkgInstallDir}
 export CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH:+${CMAKE_PREFIX_PATH}:}${vcpkgInstallDir}/debug
 
+# Update CMAKE_LIBRARY_PATH
+export CMAKE_LIBRARY_PATH=${CMAKE_LIBRARY_PATH:+${CMAKE_LIBRARY_PATH}:}${vcpkgInstallDir}/lib/manual-link
+export CMAKE_LIBRARY_PATH=${CMAKE_LIBRARY_PATH:+${CMAKE_LIBRARY_PATH}:}${vcpkgInstallDir}/debug/lib/manual-link
+
 # Update CMAKE_PROGRAM_TOOLS (for protobuf)
 export CMAKE_PROGRAM_PATH=${CMAKE_PROGRAM_PATH:+${CMAKE_PROGRAM_PATH}:}${vcpkgInstallDir}/tools/protobuf
