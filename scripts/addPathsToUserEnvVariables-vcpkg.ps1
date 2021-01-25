@@ -38,5 +38,9 @@ Add-ValueToUserEnvVariable PATH ($VcpkgInstallDir + "\debug\bin");
 Add-ValueToUserEnvVariable CMAKE_PREFIX_PATH ($VcpkgInstallDir);
 Add-ValueToUserEnvVariable CMAKE_PREFIX_PATH ($VcpkgInstallDir + "\debug");
 
+# Extend CMAKE_LIBRARY_PATH
+Add-ValueToUserEnvVariable CMAKE_LIBRARY_PATH ($VcpkgInstallDir + "\lib\manual-link");
+Add-ValueToUserEnvVariable CMAKE_LIBRARY_PATH ($VcpkgInstallDir + "\debug\lib\manual-link");
+
 # Extend CMAKE_PROGRAM_TOOLS (for protobuf)
 Add-ValueToUserEnvVariable CMAKE_PROGRAM_PATH ($VcpkgInstallDir + "\tools\protobuf");

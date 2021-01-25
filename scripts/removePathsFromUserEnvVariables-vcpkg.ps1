@@ -36,6 +36,10 @@ Remove-ValueFromUserEnvVariable PATH ($VcpkgInstallDir + "\debug\bin");
 Remove-ValueFromUserEnvVariable CMAKE_PREFIX_PATH ($VcpkgInstallDir);
 Remove-ValueFromUserEnvVariable CMAKE_PREFIX_PATH ($VcpkgInstallDir + "\debug");
 
+# Cleanup CMAKE_LIBRARY_PATH
+Remove-ValueFromUserEnvVariable CMAKE_LIBRARY_PATH ($VcpkgInstallDir + "\lib\manual-link");
+Remove-ValueFromUserEnvVariable CMAKE_LIBRARY_PATH ($VcpkgInstallDir + "\debug\lib\manual-link");
+
 # Cleanup CMAKE_PROGRAM_PATH
 Remove-ValueFromUserEnvVariable CMAKE_PROGRAM_PATH ($VcpkgInstallDir + "\tools\protobuf");
 
