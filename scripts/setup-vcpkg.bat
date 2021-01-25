@@ -15,5 +15,9 @@ rem Update CMAKE_PREFIX_PATH
 set "CMAKE_PREFIX_PATH=%CMAKE_PREFIX_PATH%;%vcpkgInstallDir%"
 set "CMAKE_PREFIX_PATH=%CMAKE_PREFIX_PATH%;%vcpkgInstallDir%\debug"
 
+rem Update CMAKE_LIBRARY_PATH
+set "CMAKE_LIBRARY_PATH=%CMAKE_LIBRARY_PATH%;%vcpkgInstallDir%\lib\manual-link"
+set "CMAKE_LIBRARY_PATH=%CMAKE_LIBRARY_PATH%;%vcpkgInstallDir%\debug\lib\manual-link"
+
 rem Update CMAKE_PROGRAM_PATH
 set "CMAKE_PROGRAM_PATH=%CMAKE_PROGRAM_PATH%;%vcpkgInstallDir%\tools\protobuf"
