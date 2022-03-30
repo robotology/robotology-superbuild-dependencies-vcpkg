@@ -74,7 +74,7 @@ jobs:
         cp scripts/removePathsFromUserEnvVariables-vcpkg.ps1 /c/robotology/scripts
         cp scripts/removePathsFromUserEnvVariables-deps.ps1 /c/robotology/scripts
 
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v3
       with:
         name: vcpkg-robotology-yarp-deps-only
         path: C:/robotology
@@ -104,7 +104,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - uses: actions/download-artifact@v1
+    - uses: actions/download-artifact@v3
       with:
         name: vcpkg-robotology-yarp-deps-only
         path: C:/robotology
@@ -137,7 +137,7 @@ jobs:
         rm -rf /c/robotology/vcpkg/installed/x64-windows/bin/*.pdb
         rm -rf /c/robotology/vcpkg/installed/x64-windows/debug/bin/*.pdb
 
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v3
       with:
         name: vcpkg-robotology
         path: C:/robotology
@@ -166,7 +166,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - uses: actions/download-artifact@v1
+    - uses: actions/download-artifact@v3
       with:
         name: vcpkg-robotology
         path: C:/robotology
@@ -200,7 +200,7 @@ jobs:
         rm -rf /c/robotology/vcpkg/installed/x64-windows/bin/*.pdb
         rm -rf /c/robotology/vcpkg/installed/x64-windows/debug/bin/*.pdb
 
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v3
       with:
         name: vcpkg-robotology-with-gazebo-deps
         path: C:/robotology
@@ -212,7 +212,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - uses: actions/download-artifact@v1
+    - uses: actions/download-artifact@v3
       with:
         name: vcpkg-robotology-with-gazebo-deps
         path: C:/robotology
@@ -244,7 +244,7 @@ jobs:
 
     - name: Upload logs on failures
       if: ${{ failure() }}
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3
       with:
         name: gazebo-colcon-logs
         path: C:/robotology/gazebo/log
