@@ -112,7 +112,6 @@ jobs:
     - name: Extract artifact
       shell: bash
       run: |
-        cd /c
         7z x -y -oC:/ vcpkg-robotology-yarp-only.zip
 
     - name: Check free space
