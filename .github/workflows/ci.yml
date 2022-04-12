@@ -78,16 +78,15 @@ jobs:
         cp scripts/removePathsFromUserEnvVariables-vcpkg.ps1 /c/robotology/scripts
         cp scripts/removePathsFromUserEnvVariables-deps.ps1 /c/robotology/scripts
 
-    - uses: actions/upload-artifact@v3
-      with:
-        name: vcpkg-robotology-yarp-deps-only
-        path: C:/robotology
-
-    - name: Prepare release file
-      if: github.event_name == 'release'
+    - name: Prepare artifacts and release file
       shell: cmd
       run: |
         7z a vcpkg-robotology-yarp-only.zip C:\robotology
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: vcpkg-robotology-yarp-deps-only
+        path: vcpkg-robotology-yarp-only.zip
 
     - name: Upload Release Asset
       if: github.event_name == 'release'
@@ -111,7 +110,13 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         name: vcpkg-robotology-yarp-deps-only
-        path: C:/robotology
+        path: C:/
+
+    - name: Extract artifact
+      shell: bash
+      run: |
+        cd /c
+        7z x -y vcpkg-robotology-yarp-only.zip
 
     - name: Check free space
       shell: bash
@@ -141,16 +146,15 @@ jobs:
         rm -rf /c/robotology/vcpkg/installed/x64-windows/bin/*.pdb
         rm -rf /c/robotology/vcpkg/installed/x64-windows/debug/bin/*.pdb
 
-    - uses: actions/upload-artifact@v3
-      with:
-        name: vcpkg-robotology
-        path: C:/robotology
-
-    - name: Prepare release file
-      if: github.event_name == 'release'
+    - name: Prepare artifact and release file
       shell: cmd
       run: |
         7z a vcpkg-robotology.zip C:\robotology
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: vcpkg-robotology
+        path: vcpkg-robotology.zip
 
     - name: Upload Release Asset
       if: github.event_name == 'release'
@@ -173,7 +177,13 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         name: vcpkg-robotology
-        path: C:/robotology
+        path: C:/
+
+    - name: Extract artifact
+      shell: bash
+      run: |
+        cd /c
+        7z x -y vcpkg-robotology.zip
 
     - name: Check free space
       shell: bash
@@ -204,10 +214,15 @@ jobs:
         rm -rf /c/robotology/vcpkg/installed/x64-windows/bin/*.pdb
         rm -rf /c/robotology/vcpkg/installed/x64-windows/debug/bin/*.pdb
 
+    - name: Prepare artifacts file
+      shell: cmd
+      run: |
+        7z a vcpkg-robotology-with-gazebo-deps.zip C:\robotology
+
     - uses: actions/upload-artifact@v3
       with:
         name: vcpkg-robotology-with-gazebo-deps
-        path: C:/robotology
+        path: vcpkg-robotology-with-gazebo-deps.zip
 
   build-with-gazebo:
     runs-on: windows-2019
@@ -219,7 +234,13 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         name: vcpkg-robotology-with-gazebo-deps
-        path: C:/robotology
+        path: C:/
+
+    - name: Extract artifact
+      shell: bash
+      run: |
+        cd /c
+        7z x -y vcpkg-robotology-with-gazebo-deps.zip
 
     - name: Check free space
       shell: bash
