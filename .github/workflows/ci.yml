@@ -29,7 +29,9 @@ jobs:
     - name: Download custom vcpkg and additional ports
       shell: bash
       run: |
-        choco install -y wget
+        choco install -y wget zip unzip
+        zip --help
+        unzip --help
         mkdir C:/robotology
         cd C:/robotology
         git clone https://github.com/Microsoft/vcpkg
