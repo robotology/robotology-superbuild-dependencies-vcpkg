@@ -82,5 +82,3 @@ To use the script in a GitHub Action script, you can use the following snippet:
 
 You can then specify the `CMAKE_TOOLCHAIN_FILE` for the CMake projects that you want that use the installed dependencies, or execute the enviroment variables 
 setup scripts. 
-
-

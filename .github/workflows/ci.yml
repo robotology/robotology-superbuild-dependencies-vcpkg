@@ -2,6 +2,8 @@ name: CI
 
 on:
   push:
+    branches:
+      - master
   pull_request:
   release:
     types: [published]
@@ -32,7 +34,7 @@ jobs:
         cd C:/robotology
         git clone https://github.com/Microsoft/vcpkg
         cd vcpkg
-        git checkout cdd51899f6ae3736bfbe936f9e387f86d4a63a58
+        git checkout 27fd32e91c172e8b8a2ee338efc088a0c0103348
         C:/robotology/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology/robotology-vcpkg-ports C:/robotology/robotology-vcpkg-ports
         cd C:/robotology/robotology-vcpkg-ports
@@ -41,7 +43,7 @@ jobs:
     - name: Install vcpkg ports
       shell: bash
       run: |
-        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows ace eigen3 gsl libjpeg-turbo opencv portaudio sdl1 sdl2 qt5-base[latest] qt5-declarative qt5-multimedia qt5-quickcontrols qt5-quickcontrols2 sqlite3[core,tool] tinyxml
+        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows ace eigen3 graphviz gsl libjpeg-turbo opencv portaudio sdl1 sdl2 qt5-base[latest] qt5-declarative qt5-multimedia qt5-quickcontrols qt5-quickcontrols2 sqlite3[core,tool] tinyxml
         C:/robotology/vcpkg/vcpkg.exe list
 
     # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
@@ -74,16 +76,15 @@ jobs:
         cp scripts/removePathsFromUserEnvVariables-vcpkg.ps1 /c/robotology/scripts
         cp scripts/removePathsFromUserEnvVariables-deps.ps1 /c/robotology/scripts
 
-    - uses: actions/upload-artifact@v1
-      with:
-        name: vcpkg-robotology-yarp-deps-only
-        path: C:/robotology
-
-    - name: Prepare release file
-      if: github.event_name == 'release'
+    - name: Prepare artifacts and release file
       shell: cmd
       run: |
         7z a vcpkg-robotology-yarp-only.zip C:\robotology
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: vcpkg-robotology-yarp-deps-only
+        path: vcpkg-robotology-yarp-only.zip
 
     - name: Upload Release Asset
       if: github.event_name == 'release'
@@ -104,10 +105,14 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - uses: actions/download-artifact@v1
+    - uses: actions/download-artifact@v3
       with:
         name: vcpkg-robotology-yarp-deps-only
-        path: C:/robotology
+
+    - name: Extract artifact
+      shell: bash
+      run: |
+        7z x -y -oC:/ vcpkg-robotology-yarp-only.zip
 
     - name: Check free space
       shell: bash
@@ -117,7 +122,7 @@ jobs:
     - name: Install vcpkg ports
       shell: bash
       run: |
-        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows asio boost-circular-buffer boost-asio boost-bind boost-process boost-dll boost-filesystem boost-system freeglut esdcan-binary glew glfw3 nlohmann-json ode openssl libxml2 matio ipopt-binary cppad irrlicht spdlog
+        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows asio assimp boost-circular-buffer boost-asio boost-bind boost-process boost-dll boost-filesystem boost-system freeglut esdcan-binary glew glfw3 nlohmann-json ode openssl libxml2 matio ipopt-binary cppad irrlicht spdlog
         C:/robotology/vcpkg/vcpkg.exe list
 
     # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
@@ -137,16 +142,15 @@ jobs:
         rm -rf /c/robotology/vcpkg/installed/x64-windows/bin/*.pdb
         rm -rf /c/robotology/vcpkg/installed/x64-windows/debug/bin/*.pdb
 
-    - uses: actions/upload-artifact@v1
-      with:
-        name: vcpkg-robotology
-        path: C:/robotology
-
-    - name: Prepare release file
-      if: github.event_name == 'release'
+    - name: Prepare artifact and release file
       shell: cmd
       run: |
         7z a vcpkg-robotology.zip C:\robotology
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: vcpkg-robotology
+        path: vcpkg-robotology.zip
 
     - name: Upload Release Asset
       if: github.event_name == 'release'
@@ -166,10 +170,14 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - uses: actions/download-artifact@v1
+    - uses: actions/download-artifact@v3
       with:
         name: vcpkg-robotology
-        path: C:/robotology
+
+    - name: Extract artifact
+      shell: bash
+      run: |
+       7z x -y -oC: vcpkg-robotology.zip
 
     - name: Check free space
       shell: bash
@@ -200,10 +208,15 @@ jobs:
         rm -rf /c/robotology/vcpkg/installed/x64-windows/bin/*.pdb
         rm -rf /c/robotology/vcpkg/installed/x64-windows/debug/bin/*.pdb
 
-    - uses: actions/upload-artifact@v1
+    - name: Prepare artifacts file
+      shell: cmd
+      run: |
+        7z a vcpkg-robotology-with-gazebo-deps.zip C:\robotology
+
+    - uses: actions/upload-artifact@v3
       with:
         name: vcpkg-robotology-with-gazebo-deps
-        path: C:/robotology
+        path: vcpkg-robotology-with-gazebo-deps.zip
 
   build-with-gazebo:
     runs-on: windows-2019
@@ -212,10 +225,14 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - uses: actions/download-artifact@v1
+    - uses: actions/download-artifact@v3
       with:
         name: vcpkg-robotology-with-gazebo-deps
-        path: C:/robotology
+
+    - name: Extract artifact
+      shell: bash
+      run: |
+        7z x -y -oC: vcpkg-robotology-with-gazebo-deps.zip
 
     - name: Check free space
       shell: bash
@@ -244,7 +261,7 @@ jobs:
 
     - name: Upload logs on failures
       if: ${{ failure() }}
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3
       with:
         name: gazebo-colcon-logs
         path: C:/robotology/gazebo/log
