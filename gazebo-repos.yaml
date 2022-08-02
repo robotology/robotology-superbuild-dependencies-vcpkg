@@ -2,4 +2,4 @@ repositories:
   gazebo:
     type: git
     url: https://github.com/osrf/gazebo
-    version: gazebo11_11.10.2
+    version: gazebo11_11.11.0
