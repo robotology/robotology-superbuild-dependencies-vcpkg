@@ -253,11 +253,13 @@ jobs:
         mkdir src
         vcs import src < ${GITHUB_WORKSPACE}/gazebo-repos.yaml
 
+    # The option --event-handlers console_cohesion+ is added as a workaround for 
+    # https://github.com/colcon/colcon-cmake/issues/67#issuecomment-1104434793
     - name: Build Gazebo and related libraries
       shell: bash
       run: |
         cd C:/robotology/gazebo
-        colcon build --merge-install --cmake-args -G "Visual Studio 16 2019" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:/robotology/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_TESTING:BOOL=OFF
+        colcon build  --event-handlers console_cohesion+ --merge-install --cmake-args -G "Visual Studio 16 2019" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:/robotology/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_TESTING:BOOL=OFF
 
     - name: Upload logs on failures
       if: ${{ failure() }}
