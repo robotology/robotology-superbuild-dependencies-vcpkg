@@ -2,4 +2,4 @@ repositories:
   gazebo:
     type: git
     url: https://github.com/traversaro/gazebo
-    version: dfc8e46d9c66f9c2267a160cf285eecb9bb3f829
+    version: 6e86dff6589187a92d379a71ca3b1a86b12a573f
