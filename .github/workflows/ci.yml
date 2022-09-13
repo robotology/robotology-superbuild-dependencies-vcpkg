@@ -34,7 +34,7 @@ jobs:
         cd C:/robotology
         git clone https://github.com/Microsoft/vcpkg
         cd vcpkg
-        git checkout 27fd32e91c172e8b8a2ee338efc088a0c0103348
+        git checkout 2022.07.25
         C:/robotology/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology/robotology-vcpkg-ports C:/robotology/robotology-vcpkg-ports
         cd C:/robotology/robotology-vcpkg-ports
@@ -188,7 +188,7 @@ jobs:
       shell: bash
       run: |
         # Install dependencies for gazebo11
-        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows boost-circular-buffer boost-asio boost-any boost-date-time boost-filesystem boost-format boost-interprocess boost-iostreams boost-program-options boost-property-tree boost-regex boost-smart-ptr boost-system boost-thread boost-variant boost-uuid bullet3 cppzmq curl dlfcn-win32 freeimage gts libyaml libzip jsoncpp ogre[core,assimp,freeimage,overlay,zziplib] protobuf qt5-base qwt sqlite3[core,tool] tbb tinyxml2 urdfdom zeromq ignition-cmake2 ignition-common3 ignition-fuel-tools4 ignition-math6 ignition-msgs5 ignition-transport8 sdformat9
+        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows boost-circular-buffer boost-asio boost-any boost-date-time boost-filesystem boost-format boost-interprocess boost-iostreams boost-program-options boost-property-tree boost-regex boost-smart-ptr boost-system boost-thread boost-variant boost-uuid bullet3 cppzmq curl dlfcn-win32 freeimage gts libyaml libzip jsoncpp ogre[core,assimp,freeimage,overlay,zziplib] protobuf qt5-base qwt sqlite3[core,tool] tbb tinyxml2 urdfdom zeromq ignition-cmake2 ignition-common3 ignition-fuel-tools4 ignition-math6 ignition-msgs5 ignition-transport8 sdformat9 pcl
         C:/robotology/vcpkg/vcpkg.exe list
 
     # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
@@ -253,11 +253,13 @@ jobs:
         mkdir src
         vcs import src < ${GITHUB_WORKSPACE}/gazebo-repos.yaml
 
+    # The option --event-handlers console_cohesion+ is added as a workaround for 
+    # https://github.com/colcon/colcon-cmake/issues/67#issuecomment-1104434793
     - name: Build Gazebo and related libraries
       shell: bash
       run: |
         cd C:/robotology/gazebo
-        colcon build --merge-install --cmake-args -G "Visual Studio 16 2019" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:/robotology/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_TESTING:BOOL=OFF
+        colcon build  --event-handlers console_cohesion+ --merge-install --cmake-args -G "Visual Studio 16 2019" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:/robotology/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_TESTING:BOOL=OFF -DUSE_EXTERNAL_TINYXML:BOOL=ON -DUSE_EXTERNAL_TINYXML2:BOOL=ON
 
     - name: Upload logs on failures
       if: ${{ failure() }}
