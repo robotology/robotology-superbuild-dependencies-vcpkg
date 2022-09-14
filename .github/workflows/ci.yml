@@ -32,6 +32,7 @@ jobs:
         env
         # Avoid conflicts with vcpkg in C:\vcpkg
         rm -rf C:/vcpkg
+        echo "VCPKG_ROOT=C:/robotology/vcpkg" >> $GITHUB_ENV
         choco install -y wget
         mkdir C:/robotology
         cd C:/robotology
