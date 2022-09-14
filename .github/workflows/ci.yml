@@ -45,6 +45,12 @@ jobs:
       run: |
         C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows eigen3
         C:/robotology/vcpkg/vcpkg.exe list
+        
+    - name: Debug
+      shell: bash
+      run: |
+        cd /c/robotology/vcpkg
+        ls
 
     # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
     # For some reason doing using git bash to do rm -rf fails for icu's port buildtrees, probably for the use of msys2
