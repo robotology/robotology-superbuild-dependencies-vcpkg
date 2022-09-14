@@ -29,6 +29,8 @@ jobs:
     - name: Download custom vcpkg and additional ports
       shell: bash
       run: |
+        # Avoid conflicts with vcpkg in C:\vcpkg
+        rm -rf C:/vcpkg
         choco install -y wget
         mkdir C:/robotology
         cd C:/robotology
