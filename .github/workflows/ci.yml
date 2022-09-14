@@ -43,7 +43,7 @@ jobs:
     - name: Install vcpkg ports
       shell: bash
       run: |
-        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows ace eigen3
+        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows eigen3
         C:/robotology/vcpkg/vcpkg.exe list
 
     # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
@@ -52,6 +52,8 @@ jobs:
     - name: Cleanup vcpkg temporary directories
       shell: cmd
       run: |
+        cd C:\robotology\vcpkg\
+        dir
         RMDIR /Q/S C:\robotology\vcpkg\buildtrees
         RMDIR /Q/S C:\robotology\vcpkg\packages
         RMDIR /Q/S C:\robotology\vcpkg\downloads
