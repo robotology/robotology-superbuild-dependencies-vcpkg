@@ -26,7 +26,7 @@ jobs:
     - name: Override bash shell PATH (windows-latest)
       run: echo "C:\Program Files\Git\bin" >> $GITHUB_PATH
 
-    - name: Download custom vcpkg and additional ports
+    - name: Avoid conflicts with vcpkg in C:\vcpkg
       shell: bash
       run: |
         # Print environment variables for debug
@@ -34,6 +34,10 @@ jobs:
         # Avoid conflicts with vcpkg in C:\vcpkg
         rm -rf C:/vcpkg
         echo "VCPKG_ROOT=C:/robotology/vcpkg" >> $GITHUB_ENV
+
+    - name: Download custom vcpkg and additional ports
+      shell: bash
+      run: |
         choco install -y wget
         mkdir C:/robotology
         cd C:/robotology
@@ -124,11 +128,18 @@ jobs:
       run: |
         df -h
 
+    - name: Avoid conflicts with vcpkg in C:\vcpkg
+      shell: bash
+      run: |
+        # Print environment variables for debug
+        env
+        # Avoid conflicts with vcpkg in C:\vcpkg
+        rm -rf C:/vcpkg
+        echo "VCPKG_ROOT=C:/robotology/vcpkg" >> $GITHUB_ENV
+
     - name: Install vcpkg ports
       shell: bash
       run: |
-        # Avoid conflicts with vcpkg in C:\vcpkg
-        echo "VCPKG_ROOT=C:/robotology/vcpkg" >> $GITHUB_ENV
         C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows asio assimp boost-circular-buffer boost-asio boost-bind boost-process boost-dll boost-filesystem boost-system freeglut esdcan-binary glew glfw3 nlohmann-json ode openssl libxml2 matio ipopt-binary cppad irrlicht spdlog
         C:/robotology/vcpkg/vcpkg.exe list
 
@@ -191,11 +202,18 @@ jobs:
       run: |
         df -h
 
+    - name: Avoid conflicts with vcpkg in C:\vcpkg
+      shell: bash
+      run: |
+        # Print environment variables for debug
+        env
+        # Avoid conflicts with vcpkg in C:\vcpkg
+        rm -rf C:/vcpkg
+        echo "VCPKG_ROOT=C:/robotology/vcpkg" >> $GITHUB_ENV
+
     - name: Install vcpkg ports
       shell: bash
       run: |
-        # Avoid conflicts with vcpkg in C:\vcpkg
-        echo "VCPKG_ROOT=C:/robotology/vcpkg" >> $GITHUB_ENV
         # Install dependencies for gazebo11
         C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows boost-circular-buffer boost-asio boost-any boost-date-time boost-filesystem boost-format boost-interprocess boost-iostreams boost-program-options boost-property-tree boost-regex boost-smart-ptr boost-system boost-thread boost-variant boost-uuid bullet3 cppzmq curl dlfcn-win32 freeimage gts libyaml libzip jsoncpp ogre[core,assimp,freeimage,overlay,zziplib] protobuf qt5-base qwt sqlite3[core,tool] tbb tinyxml2 urdfdom zeromq ignition-cmake2 ignition-common3 ignition-fuel-tools4 ignition-math6 ignition-msgs5 ignition-transport8 sdformat9 pcl[visualization] vtk
         C:/robotology/vcpkg/vcpkg.exe list
@@ -253,12 +271,19 @@ jobs:
       run: |
         pip install vcstool colcon-common-extensions
 
+    - name: Avoid conflicts with vcpkg in C:\vcpkg
+      shell: bash
+      run: |
+        # Print environment variables for debug
+        env
+        # Avoid conflicts with vcpkg in C:\vcpkg
+        rm -rf C:/vcpkg
+        echo "VCPKG_ROOT=C:/robotology/vcpkg" >> $GITHUB_ENV
+
     # Based on https://colcon.readthedocs.io/en/released/user/quick-start.html#build-gazebo-and-the-ignition-packages
     - name: Download Gazebo and related libraries
       shell: bash
       run: |
-        # Avoid conflicts with vcpkg in C:\vcpkg
-        echo "VCPKG_ROOT=C:/robotology/vcpkg" >> $GITHUB_ENV
         mkdir C:/robotology/gazebo
         cd C:/robotology/gazebo
         mkdir src
