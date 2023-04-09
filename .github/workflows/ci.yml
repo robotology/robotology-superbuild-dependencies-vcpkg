@@ -43,7 +43,7 @@ jobs:
         cd C:/robotology
         git clone https://github.com/Microsoft/vcpkg
         cd vcpkg
-        git checkout 2022.07.25
+        git checkout 2023.02.24
         C:/robotology/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology/robotology-vcpkg-ports C:/robotology/robotology-vcpkg-ports
         cd C:/robotology/robotology-vcpkg-ports
@@ -140,7 +140,7 @@ jobs:
     - name: Install vcpkg ports
       shell: bash
       run: |
-        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows asio assimp boost-circular-buffer boost-asio boost-bind boost-process boost-dll boost-filesystem boost-system freeglut esdcan-binary glew glfw3 nlohmann-json ode openssl libxml2 matio ipopt-binary cppad irrlicht spdlog
+        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows asio assimp boost-circular-buffer boost-asio boost-bind boost-process boost-dll boost-filesystem boost-system freeglut esdcan-binary glew glfw3 nlohmann-json ode openssl libxml2 matio ipopt-binary cppad irrlicht spdlog tinyxml2
         C:/robotology/vcpkg/vcpkg.exe list
 
     # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
