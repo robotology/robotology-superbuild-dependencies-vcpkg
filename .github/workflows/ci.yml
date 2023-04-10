@@ -43,11 +43,11 @@ jobs:
         cd C:/robotology
         git clone https://github.com/Microsoft/vcpkg
         cd vcpkg
-        git checkout 2023.02.24
+        git checkout 45b0e4b5854bae6de9bfa1eeffbbad51bc1d19fe
         C:/robotology/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology/robotology-vcpkg-ports C:/robotology/robotology-vcpkg-ports
         cd C:/robotology/robotology-vcpkg-ports
-        git checkout v0.2.0
+        git checkout v0.2.1
 
     - name: Install vcpkg ports
       shell: bash
