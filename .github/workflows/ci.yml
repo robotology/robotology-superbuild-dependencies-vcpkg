@@ -15,7 +15,7 @@ jobs:
     runs-on: windows-2019
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
 
     - name: Check free space
       shell: bash
@@ -43,16 +43,16 @@ jobs:
         cd C:/robotology
         git clone https://github.com/Microsoft/vcpkg
         cd vcpkg
-        git checkout 2022.07.25
+        git checkout 2023.10.19
         C:/robotology/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology/robotology-vcpkg-ports C:/robotology/robotology-vcpkg-ports
         cd C:/robotology/robotology-vcpkg-ports
-        git checkout v0.2.0
+        git checkout v0.2.1
 
     - name: Install vcpkg ports
       shell: bash
       run: |
-        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows ace eigen3 graphviz gsl libjpeg-turbo opencv[contrib] portaudio sdl1 sdl2 qt5-base[latest] qt5-declarative qt5-multimedia qt5-quickcontrols qt5-quickcontrols2 sqlite3[core,tool] tinyxml
+        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows ace eigen3 graphviz gsl libjpeg-turbo hdf5[core,szip,tools,zlib] opencv[contrib] portaudio sdl1 sdl2 qt5-base[latest] qt5-declarative qt5-multimedia qt5-quickcontrols qt5-quickcontrols2 sqlite3[core,tool] tinyxml
         C:/robotology/vcpkg/vcpkg.exe list
 
     # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
@@ -112,7 +112,7 @@ jobs:
     needs: build-yarp-deps-only
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
 
     - uses: actions/download-artifact@v3
       with:
@@ -140,7 +140,7 @@ jobs:
     - name: Install vcpkg ports
       shell: bash
       run: |
-        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows asio assimp boost-circular-buffer boost-asio boost-bind boost-process boost-dll boost-filesystem boost-system freeglut esdcan-binary glew glfw3 nlohmann-json ode openssl libxml2 matio ipopt-binary cppad irrlicht spdlog
+        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows asio assimp boost-circular-buffer boost-asio boost-bind boost-process boost-dll boost-filesystem boost-system freeglut esdcan-binary glew glfw3 nlohmann-json ode openssl libxml2 hdf5[core,szip,tools,zlib] matio[core,hdf5,zlib] ipopt-binary cppad irrlicht spdlog tinyxml2 tomlplusplus pcl[visualization] vtk
         C:/robotology/vcpkg/vcpkg.exe list
 
     # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
@@ -179,159 +179,4 @@ jobs:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: ./vcpkg-robotology.zip
           asset_name: vcpkg-robotology.zip
-          asset_content_type: application/zip
-
-  build-with-gazebo-deps:
-    runs-on: windows-2019
-    needs: build
-
-    steps:
-    - uses: actions/checkout@v1
-
-    - uses: actions/download-artifact@v3
-      with:
-        name: vcpkg-robotology
-
-    - name: Extract artifact
-      shell: bash
-      run: |
-       7z x -y -oC: vcpkg-robotology.zip
-
-    - name: Check free space
-      shell: bash
-      run: |
-        df -h
-
-    - name: Avoid conflicts with vcpkg in C:\vcpkg
-      shell: bash
-      run: |
-        # Print environment variables for debug
-        env
-        # Avoid conflicts with vcpkg in C:\vcpkg
-        rm -rf C:/vcpkg
-        echo "VCPKG_ROOT=C:/robotology/vcpkg" >> $GITHUB_ENV
-
-    - name: Install vcpkg ports
-      shell: bash
-      run: |
-        # Install dependencies for gazebo11
-        C:/robotology/vcpkg/vcpkg.exe --overlay-ports=C:/robotology/robotology-vcpkg-ports --overlay-ports=${GITHUB_WORKSPACE}/custom-ports install --triplet x64-windows boost-circular-buffer boost-asio boost-any boost-date-time boost-filesystem boost-format boost-interprocess boost-iostreams boost-program-options boost-property-tree boost-regex boost-smart-ptr boost-system boost-thread boost-variant boost-uuid bullet3 cppzmq curl dlfcn-win32 freeimage gts libyaml libzip jsoncpp ogre[core,assimp,freeimage,overlay,zziplib] protobuf qt5-base qwt sqlite3[core,tool] tbb tinyxml2 urdfdom zeromq ignition-cmake2 ignition-common3 ignition-fuel-tools4 ignition-math6 ignition-msgs5 ignition-transport8 sdformat9 pcl[visualization] vtk
-        C:/robotology/vcpkg/vcpkg.exe list
-
-    # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
-    # For some reason doing using git bash to do rm -rf fails for icu's port buildtrees, probably for the use of msys2
-    # See https://github.com/microsoft/vcpkg/issues/10365
-    - name: Cleanup vcpkg temporary directories
-      shell: cmd
-      run: |
-        RMDIR /Q/S C:\robotology\vcpkg\buildtrees
-        RMDIR /Q/S C:\robotology\vcpkg\packages
-        RMDIR /Q/S C:\robotology\vcpkg\downloads
-
-    # Remove .pdb (i.e. debug symbols) files to save space
-    - name: Remove .pdb
-      shell: bash
-      run: |
-        rm -rf /c/robotology/vcpkg/installed/x64-windows/bin/*.pdb
-        rm -rf /c/robotology/vcpkg/installed/x64-windows/debug/bin/*.pdb
-
-    - name: Prepare artifacts file
-      shell: cmd
-      run: |
-        7z a vcpkg-robotology-with-gazebo-deps.zip C:\robotology
-
-    - uses: actions/upload-artifact@v3
-      with:
-        name: vcpkg-robotology-with-gazebo-deps
-        path: vcpkg-robotology-with-gazebo-deps.zip
-
-  build-with-gazebo:
-    runs-on: windows-2019
-    needs: build-with-gazebo-deps
-
-    steps:
-    - uses: actions/checkout@v1
-
-    - uses: actions/download-artifact@v3
-      with:
-        name: vcpkg-robotology-with-gazebo-deps
-
-    - name: Extract artifact
-      shell: bash
-      run: |
-        7z x -y -oC: vcpkg-robotology-with-gazebo-deps.zip
-
-    - name: Check free space
-      shell: bash
-      run: |
-        df -h
-
-    - name: Install required python-based tools
-      shell: bash
-      run: |
-        pip install vcstool colcon-common-extensions
-
-    - name: Avoid conflicts with vcpkg in C:\vcpkg
-      shell: bash
-      run: |
-        # Print environment variables for debug
-        env
-        # Avoid conflicts with vcpkg in C:\vcpkg
-        rm -rf C:/vcpkg
-        echo "VCPKG_ROOT=C:/robotology/vcpkg" >> $GITHUB_ENV
-
-    # Based on https://colcon.readthedocs.io/en/released/user/quick-start.html#build-gazebo-and-the-ignition-packages
-    - name: Download Gazebo and related libraries
-      shell: bash
-      run: |
-        mkdir C:/robotology/gazebo
-        cd C:/robotology/gazebo
-        mkdir src
-        vcs import src < ${GITHUB_WORKSPACE}/gazebo-repos.yaml
-
-    # The option --event-handlers console_cohesion+ is added as a workaround for 
-    # https://github.com/colcon/colcon-cmake/issues/67#issuecomment-1104434793
-    - name: Build Gazebo and related libraries
-      shell: bash
-      run: |
-        cd C:/robotology/gazebo
-        colcon build  --event-handlers console_cohesion+ --merge-install --cmake-args -G "Visual Studio 16 2019" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:/robotology/vcpkg/scripts/buildsystems/vcpkg.cmake -DBUILD_TESTING:BOOL=OFF -DUSE_EXTERNAL_TINYXML:BOOL=ON -DUSE_EXTERNAL_TINYXML2:BOOL=ON
-
-    - name: Upload logs on failures
-      if: ${{ failure() }}
-      uses: actions/upload-artifact@v3
-      with:
-        name: gazebo-colcon-logs
-        path: C:/robotology/gazebo/log
-
-    # Remove temporary files
-    - name: Cleanup vcpkg temporary directories
-      shell: cmd
-      run: |
-        RMDIR /Q/S C:\robotology\gazebo\build
-        RMDIR /Q/S C:\robotology\gazebo\src
-
-    - name: Install setup scripts
-      shell: bash
-      run: |
-        cp scripts/setup-gazebo.bat /c/robotology/scripts
-        cp scripts/setup-gazebo.sh /c/robotology/scripts
-        cp scripts/addPathsToUserEnvVariables-gazebo.ps1 /c/robotology/scripts
-        cp scripts/removePathsFromUserEnvVariables-gazebo.ps1 /c/robotology/scripts
-
-    - name: Prepare release file
-      if: github.event_name == 'release'
-      shell: cmd
-      run: |
-        7z a vcpkg-robotology-with-gazebo.zip C:\robotology
-
-    - name: Upload Release Asset
-      if: github.event_name == 'release'
-      uses: actions/upload-release-asset@v1.0.1
-      env:
-        GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./vcpkg-robotology-with-gazebo.zip
-          asset_name: vcpkg-robotology-with-gazebo.zip
           asset_content_type: application/zip
