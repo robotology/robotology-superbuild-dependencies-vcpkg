@@ -43,7 +43,7 @@ jobs:
         cd C:/robotology
         git clone https://github.com/Microsoft/vcpkg
         cd vcpkg
-        git checkout 2023.10.19
+        git checkout 2025.01.13
         C:/robotology/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology/robotology-vcpkg-ports C:/robotology/robotology-vcpkg-ports
         cd C:/robotology/robotology-vcpkg-ports
@@ -90,7 +90,7 @@ jobs:
       run: |
         7z a vcpkg-robotology-yarp-only.zip C:\robotology
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: vcpkg-robotology-yarp-deps-only
         path: vcpkg-robotology-yarp-only.zip
@@ -112,9 +112,9 @@ jobs:
     needs: build-yarp-deps-only
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: vcpkg-robotology-yarp-deps-only
 
