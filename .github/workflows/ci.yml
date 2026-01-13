@@ -41,8 +41,7 @@ jobs:
         cd C:/robotology
         git clone https://github.com/Microsoft/vcpkg
         cd vcpkg
-        # Keeping this hash until https://github.com/microsoft/vcpkg/pull/49103 is not released
-        git checkout c93431c51b046bd9f74356e8ac6cbf10586f7310
+        git checkout 2025.03.19
         C:/robotology/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology/robotology-vcpkg-ports C:/robotology/robotology-vcpkg-ports
         cd C:/robotology/robotology-vcpkg-ports
